@@ -1,0 +1,31 @@
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+    testDir: "./e2e",
+    fullyParallel: true,
+    forbidOnly: !!process.env.CI,
+    retries: process.env.CI ? 2 : 0,
+    workers: process.env.CI ? 1 : undefined,
+    reporter: "html",
+    use: {
+        baseURL: "http://localhost:3333",
+        trace: "on-first-retry",
+        screenshot: "on",
+        launchOptions: {
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        },
+    },
+    webServer: {
+        command: "npx serve local-todomvc -l 3333",
+        url: "http://localhost:3333",
+        reuseExistingServer: !process.env.CI,
+        timeout: 60000,
+    },
+    projects: [
+        {
+            name: "chromium",
+            use: { ...devices["Desktop Chrome"] },
+        },
+    ],
+    outputDir: "test-results/",
+});
