@@ -131,3 +131,8 @@ dist
 
 *storybook.log
 storybook-static
+
+# Playwright
+playwright-report/
+test-results/*
+!test-results/screenshots/
